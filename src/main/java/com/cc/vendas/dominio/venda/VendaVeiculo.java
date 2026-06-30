@@ -25,6 +25,7 @@ public class VendaVeiculo {
         this.idVeiculo = idVeiculo;
         this.preco = preco;
         this.docComprador = docComprador;
+        this.dataVenda = dataVenda;
     }
 
     public VendaVeiculo(UUID idVeiculo, BigDecimal preco, String docComprador) {
