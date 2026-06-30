@@ -21,7 +21,7 @@ public class JpaPagamentoEntity {
 
     private UUID vendaId;
 
-    private Double valor;
+    private BigDecimal valor;
     private String codigoPagamento;
     private StatusPagamento status;
     private Instant dataCriacao;
@@ -32,7 +32,7 @@ public class JpaPagamentoEntity {
     public JpaPagamentoEntity(
             UUID id,
             UUID vendaId,
-            Double valor,
+            BigDecimal valor,
             String codigoPagamento,
             StatusPagamento status,
             Instant dataCriacao,
@@ -55,9 +55,9 @@ public class JpaPagamentoEntity {
 
     public void setVendaId(UUID vendaId) { this.vendaId = vendaId; }
 
-    public Double getValor() { return valor; }
+    public BigDecimal getValor() { return valor; }
 
-    public void setValor(Double valor) { this.valor = valor; }
+    public void setValor(BigDecimal valor) { this.valor = valor; }
 
     public String getCodigoPagamento() { return codigoPagamento; }
 

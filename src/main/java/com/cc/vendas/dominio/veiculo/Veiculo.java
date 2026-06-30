@@ -4,6 +4,7 @@ import com.cc.vendas.dominio.excecao.RegraNegocioException;
 import com.cc.vendas.dominio.valueobjects.Cor;
 import com.cc.vendas.dominio.valueobjects.Marca;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -13,7 +14,7 @@ public class Veiculo {
     private String modelo;
     private Cor cor;
     private Integer ano;
-    private Double preco;
+    private BigDecimal preco;
     private StatusVeiculo status;
     private String docComprador;
     private Instant dataVenda;
@@ -28,7 +29,7 @@ public class Veiculo {
             String modelo,
             Cor cor,
             Integer ano,
-            Double preco
+            BigDecimal preco
     ) {
         this.id = id;
         this.marca = marca;
@@ -44,7 +45,7 @@ public class Veiculo {
     public String getModelo() { return modelo; }
     public Cor getCor() { return cor; }
     public Integer getAno() { return ano; }
-    public Double getPreco() { return preco; }
+    public BigDecimal getPreco() { return preco; }
     public StatusVeiculo getStatus() { return status; }
     public String getDocComprador() { return docComprador; }
     public Instant getDataVenda() { return dataVenda; }
@@ -58,7 +59,7 @@ public class Veiculo {
             String modelo,
             String corRaw,
             Integer ano,
-            Double preco
+            BigDecimal preco
     ) {
         Cor corObjeto = new Cor(corRaw);
         Marca marcaObjeto = new Marca(marcaRaw);
@@ -79,7 +80,7 @@ public class Veiculo {
             String modelo,
             String corRaw,
             Integer ano,
-            Double preco,
+            BigDecimal preco,
             StatusVeiculo status,
             String docComprador,
             Instant dataVenda
@@ -107,7 +108,7 @@ public class Veiculo {
             String modelo,
             String corRaw,
             Integer ano,
-            Double preco
+            BigDecimal preco
     ) {
         validarEdicao();
         Cor novaCor = new Cor(corRaw);
@@ -144,7 +145,7 @@ public class Veiculo {
             String modelo,
             Cor cor,
             Integer ano,
-            Double preco
+            BigDecimal preco
     ) {
         if (marca == null)
             throw new RegraNegocioException("Marca obrigatória");
@@ -158,7 +159,7 @@ public class Veiculo {
         if (ano == null || ano <= 0)
             throw new RegraNegocioException("Ano inválido");
 
-        if (preco == null || preco <= 0)
+        if (preco == null || preco.compareTo(BigDecimal.ZERO) <= 0)
             throw new RegraNegocioException("Preço inválido");
     }
 }

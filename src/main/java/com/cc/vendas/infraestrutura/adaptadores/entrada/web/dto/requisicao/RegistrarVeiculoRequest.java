@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
+import java.math.BigDecimal;
+
 @Schema(description = "Objeto de requisição para registrar um veículo")
 public record RegistrarVeiculoRequest (
         @Schema(description = "Marca do veículo", example = "Ford")
@@ -25,6 +27,6 @@ public record RegistrarVeiculoRequest (
 
         @Schema(description = "Preço de venda", example = "250000.00")
         @Positive
-        Double preco
+        BigDecimal preco
 ) {
 }

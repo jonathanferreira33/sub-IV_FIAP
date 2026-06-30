@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -17,13 +18,17 @@ public class JpaVendaVeiculoEntity extends BaseJpaEntity {
     private UUID id;
 
     private UUID idVeiculo;
-    private Double preco;
+    private BigDecimal preco;
     private String docComprador;
     private LocalDateTime dataCompra;
 
     protected JpaVendaVeiculoEntity() {}
 
-    public JpaVendaVeiculoEntity(UUID idVeiculo, Double preco, String docComprador, LocalDateTime dataCompra) {
+    public JpaVendaVeiculoEntity(
+            UUID idVeiculo,
+            BigDecimal preco,
+            String docComprador,
+            LocalDateTime dataCompra) {
         this.id = UUID.randomUUID();
         this.idVeiculo = idVeiculo;
         this.preco = preco;
@@ -47,11 +52,11 @@ public class JpaVendaVeiculoEntity extends BaseJpaEntity {
         this.idVeiculo = idVeiculo;
     }
 
-    public Double getPreco() {
+    public BigDecimal getPreco() {
         return preco;
     }
 
-    public void setPreco(Double preco) {
+    public void setPreco(BigDecimal preco) {
         this.preco = preco;
     }
 

@@ -4,13 +4,13 @@ import java.util.List;
 
 public enum StatusPagamento {
     PENDENTE,
-    PAGO,
+    CONFIRMADO,
     CANCELADO;
 
     public boolean podeTransicionar(StatusPagamento novoStatus) {
         return switch (this) {
-            case PENDENTE -> List.of(PAGO, CANCELADO ).contains(novoStatus);
-            case PAGO, CANCELADO -> false;
+            case PENDENTE -> List.of(CONFIRMADO, CANCELADO ).contains(novoStatus);
+            case CONFIRMADO, CANCELADO -> false;
         };
     }
 }

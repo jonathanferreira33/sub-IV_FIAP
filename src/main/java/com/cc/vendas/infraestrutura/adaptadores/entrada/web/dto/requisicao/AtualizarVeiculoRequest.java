@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
+import java.math.BigDecimal;
+
 @Schema(description = "Objeto de requisição para atualizar dados de um veículo")
 public record AtualizarVeiculoRequest(
         @Schema(description = "Marca do veículo", example = "Ford")
@@ -20,6 +22,6 @@ public record AtualizarVeiculoRequest(
         @NotNull Integer ano,
 
         @Schema(description = "Preço de venda", example = "250000.00")
-        @Positive Double preco
+        @Positive BigDecimal preco
 ) {
 }

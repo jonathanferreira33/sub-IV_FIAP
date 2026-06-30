@@ -1,12 +1,13 @@
 package com.cc.vendas.dominio.venda;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class VendaVeiculo {
     private UUID id;
     private UUID idVeiculo;
-    private Double preco;
+    private BigDecimal preco;
     private String docComprador;
     private LocalDateTime dataVenda;
 
@@ -16,7 +17,7 @@ public class VendaVeiculo {
     private VendaVeiculo(
             UUID id,
             UUID idVeiculo,
-            Double preco,
+            BigDecimal preco,
             String docComprador,
             LocalDateTime dataVenda
     ) {
@@ -26,7 +27,7 @@ public class VendaVeiculo {
         this.docComprador = docComprador;
     }
 
-    public VendaVeiculo(UUID idVeiculo, Double preco, String docComprador) {
+    public VendaVeiculo(UUID idVeiculo, BigDecimal preco, String docComprador) {
         this.idVeiculo = idVeiculo;
         this.preco = preco;
         this.docComprador = docComprador;
@@ -34,13 +35,13 @@ public class VendaVeiculo {
 
     public UUID getId() { return id; }
     public UUID getIdVeiculo() { return idVeiculo; }
-    public Double getPreco() { return preco; }
+    public BigDecimal getPreco() { return preco; }
     public String getDocComprador() { return docComprador; }
     public LocalDateTime getDataVenda() { return dataVenda; }
 
     public static VendaVeiculo criar(
             UUID idVeiculo,
-            Double preco,
+            BigDecimal preco,
             String docComprador
     ) {
         return new VendaVeiculo(

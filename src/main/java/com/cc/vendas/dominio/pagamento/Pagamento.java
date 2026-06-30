@@ -3,19 +3,20 @@ package com.cc.vendas.dominio.pagamento;
 import com.cc.vendas.dominio.excecao.RegraNegocioException;
 import com.cc.vendas.shared.StatusPagamento;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
 
 public class Pagamento {
     private UUID id;
     private UUID vendaId;
-    private Double valor;
+    private BigDecimal valor;
     private String codigoExterno;
     private StatusPagamento status;
     private Instant dataCriacao;
     private Instant dataAtualizacao;
 
-    private Pagamento(UUID id, UUID vendaId, Double valor, String codigoPagamento, StatusPagamento status, Instant criadoEm, Instant atualizadoEm) {
+    private Pagamento(UUID id, UUID vendaId, BigDecimal valor, String codigoPagamento, StatusPagamento status, Instant criadoEm, Instant atualizadoEm) {
         this.id = id;
         this.vendaId = vendaId;
         this.valor = valor;
@@ -27,7 +28,7 @@ public class Pagamento {
 
     public UUID getId() { return id; }
     public UUID getVendaId() { return vendaId; }
-    public Double getValor() { return valor; }
+    public BigDecimal getValor() { return valor; }
     public String getCodigoExterno() { return codigoExterno; }
     public StatusPagamento getStatus() { return status; }
     public Instant getDataCriacao() { return dataCriacao; }
@@ -35,7 +36,7 @@ public class Pagamento {
 
     public static Pagamento criar(
             UUID vendaId,
-            Double valor,
+            BigDecimal valor,
             String codigoPagamento
     ) {
         return new Pagamento(
@@ -52,7 +53,7 @@ public class Pagamento {
     public static Pagamento reconstituir(
             UUID id,
             UUID vendaId,
-            Double valor,
+            BigDecimal valor,
             String codigoPagamento,
             StatusPagamento status,
             Instant criadoEm,
@@ -78,14 +79,14 @@ public class Pagamento {
     }
 
     public boolean estaPago() {
-        return this.status == StatusPagamento.PAGO;
+        return this.status == StatusPagamento.CONFIRMADO;
     }
 
     public void confirmar() {
-        if (!status.podeTransicionar(StatusPagamento.PAGO)) {
+        if (!status.podeTransicionar(StatusPagamento.CONFIRMADO)) {
             throw new IllegalStateException("Transição inválida de status");
         }
-        this.status = StatusPagamento.PAGO;
+        this.status = StatusPagamento.CONFIRMADO;
     }
 
     public void cancelar() {
@@ -94,6 +95,5 @@ public class Pagamento {
         }
         this.status = StatusPagamento.CANCELADO;
     }
-
 
 }

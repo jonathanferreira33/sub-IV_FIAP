@@ -1,11 +1,13 @@
 package com.cc.vendas.aplicacao.dto.entrada;
 
+import java.math.BigDecimal;
+
 public record RegistrarVeiculoInput(
         String marca,
         String modelo,
         String cor,
         Integer ano,
-        Double preco
+        BigDecimal preco
 ) {
     public RegistrarVeiculoInput {
 
@@ -15,7 +17,7 @@ public record RegistrarVeiculoInput(
         if (modelo == null || modelo.isBlank()) {
             throw new IllegalArgumentException("Modelo é obrigatório");
         }
-        if (preco == null || preco <= 0) {
+        if (preco == null || preco.compareTo(BigDecimal.ZERO) <= 0){
             throw new IllegalArgumentException("Preço inválido");
         }
     }

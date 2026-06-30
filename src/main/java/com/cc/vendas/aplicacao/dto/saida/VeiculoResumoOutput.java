@@ -2,6 +2,7 @@ package com.cc.vendas.aplicacao.dto.saida;
 
 import com.cc.vendas.dominio.veiculo.StatusVeiculo;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -11,7 +12,7 @@ public record VeiculoResumoOutput(
         String modelo,
         String cor,
         Integer ano,
-        Double preco,
+        BigDecimal preco,
         StatusVeiculo statusVeiculo,
         Instant dataVenda
 ) {

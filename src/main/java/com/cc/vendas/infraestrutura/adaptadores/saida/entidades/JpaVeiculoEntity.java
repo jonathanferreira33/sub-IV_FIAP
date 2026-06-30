@@ -3,6 +3,7 @@ package com.cc.vendas.infraestrutura.adaptadores.saida.entidades;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -18,7 +19,7 @@ public class JpaVeiculoEntity {
     private String modelo;
     private String cor;
     private Integer ano;
-    private Double preco;
+    private BigDecimal preco;
     private String statusVeiculo;
     private Instant dataVenda;
 
@@ -27,7 +28,16 @@ public class JpaVeiculoEntity {
 
     protected JpaVeiculoEntity() { }
 
-    public JpaVeiculoEntity(UUID id, String marca, String modelo, String cor, Integer ano, Double preco, String statusVeiculo, String docComprador, Instant dataVenda) {
+    public JpaVeiculoEntity(
+            UUID id,
+            String marca,
+            String modelo,
+            String cor,
+            Integer ano,
+            BigDecimal preco,
+            String statusVeiculo,
+            String docComprador,
+            Instant dataVenda) {
         this.id = id;
         this.marca = marca;
         this.modelo = modelo;
@@ -79,11 +89,11 @@ public class JpaVeiculoEntity {
         this.ano = ano;
     }
 
-    public Double getPreco() {
+    public BigDecimal getPreco() {
         return preco;
     }
 
-    public void setPreco(Double preco) {
+    public void setPreco(BigDecimal preco) {
         this.preco = preco;
     }
 

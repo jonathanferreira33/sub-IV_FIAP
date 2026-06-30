@@ -3,6 +3,7 @@ package com.cc.vendas.infraestrutura.adaptadores.entrada.web.dto.resposta;
 import com.cc.vendas.dominio.veiculo.StatusVeiculo;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -27,7 +28,7 @@ public record VeiculoResumoResponse(
 
         @Schema(description = "Preço do veículo",
                 example = "250000.00")
-        Double preco,
+        BigDecimal preco,
 
         StatusVeiculo status,
 
