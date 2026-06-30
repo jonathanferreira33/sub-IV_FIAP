@@ -1,22 +1,22 @@
-package com.cc.vendas.adaptadores.infraestrutura.web.controller;
-
+package com.cc.vendas.infraestrutura.adaptadores.web.controller;
 
 
 import com.cc.vendas.aplicacao.casosdeuso.VeiculoUseCase;
 import com.cc.vendas.aplicacao.dto.saida.VeiculoResumoOutput;
+import com.cc.vendas.dominio.veiculo.StatusVeiculo;
 import com.cc.vendas.infraestrutura.adaptadores.entrada.web.controller.VeiculoController;
 import com.cc.vendas.infraestrutura.adaptadores.entrada.web.dto.requisicao.AtualizarVeiculoRequest;
 import com.cc.vendas.infraestrutura.adaptadores.entrada.web.dto.requisicao.RegistrarVeiculoRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -36,12 +36,19 @@ class VeiculoControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @MockBean
+    @MockitoBean
     private VeiculoUseCase useCase;
 
     private final UUID idVeiculo = UUID.randomUUID();
     private final VeiculoResumoOutput veiculoResumoOutput = new VeiculoResumoOutput(
-            idVeiculo, "Toyota", "Corolla", "Branco", 2024, BigDecimal.valueOf(100000)
+            idVeiculo,
+            "Toyota",
+            "Corolla",
+            "Branco",
+            2024,
+            BigDecimal.valueOf(100000),
+            StatusVeiculo.DISPONIVEL_PARA_VENDA,
+            Instant.now()
     );
 
     @Test
@@ -96,7 +103,14 @@ class VeiculoControllerTest {
         AtualizarVeiculoRequest request = new AtualizarVeiculoRequest("Toyota", "Corolla Novo", "Preto", 2025, BigDecimal.valueOf(110000));
 
         VeiculoResumoOutput outputAtualizado = new VeiculoResumoOutput(
-                idVeiculo, "Toyota", "Corolla Novo", "Preto", 2025, BigDecimal.valueOf(110000)
+                idVeiculo,
+                "Toyota",
+                "Corolla Novo",
+                "Preto",
+                2025,
+                BigDecimal.valueOf(110000),
+                StatusVeiculo.DISPONIVEL_PARA_VENDA,
+                Instant.now()
         );
 
         when(useCase.atualizarDadosVeiculo(eq(idVeiculo), any())).thenReturn(outputAtualizado);
@@ -108,4 +122,5 @@ class VeiculoControllerTest {
                 .andExpect(jsonPath("$.modelo").value("Corolla Novo"))
                 .andExpect(jsonPath("$.cor").value("Preto"));
     }
+
 }

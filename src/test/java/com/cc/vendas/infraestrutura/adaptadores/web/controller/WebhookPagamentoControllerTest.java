@@ -1,7 +1,8 @@
-package com.cc.vendas.infraestrutura.adaptadores.entrada.web.controller;
+package com.cc.vendas.infraestrutura.adaptadores.web.controller;
 
 import com.cc.vendas.aplicacao.casosdeuso.ConfirmarPagamentoUseCase;
 import com.cc.vendas.dominio.excecao.RegraNegocioException;
+import com.cc.vendas.infraestrutura.adaptadores.entrada.web.controller.WebhookPagamentoController;
 import com.cc.vendas.infraestrutura.adaptadores.entrada.web.dto.requisicao.WebhookPagementoRequest;
 import com.cc.vendas.shared.StatusPagamento;
 import com.fasterxml.jackson.databind.ObjectMapper;
