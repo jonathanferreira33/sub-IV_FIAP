@@ -1,4 +1,4 @@
-package com.cc.vendas.infraestrutura.adaptadores.web.mapper;
+package com.cc.vendas.infraestrutura.adaptadores.mapper;
 
 import com.cc.vendas.dominio.veiculo.StatusVeiculo;
 import com.cc.vendas.dominio.veiculo.Veiculo;

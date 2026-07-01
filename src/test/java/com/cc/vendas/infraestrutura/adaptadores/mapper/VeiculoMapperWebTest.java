@@ -1,4 +1,4 @@
-package com.cc.vendas.infraestrutura.adaptadores.web.mapper;
+package com.cc.vendas.infraestrutura.adaptadores.mapper;
 
 import com.cc.vendas.aplicacao.dto.entrada.AtualizarVeiculoInput;
 import com.cc.vendas.aplicacao.dto.entrada.RegistrarVeiculoInput;
