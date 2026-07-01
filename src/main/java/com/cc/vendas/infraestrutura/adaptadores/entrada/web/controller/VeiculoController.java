@@ -4,7 +4,7 @@ import com.cc.vendas.aplicacao.dto.saida.VeiculoResumoOutput;
 import com.cc.vendas.infraestrutura.adaptadores.entrada.web.dto.requisicao.AtualizarVeiculoRequest;
 import com.cc.vendas.infraestrutura.adaptadores.entrada.web.dto.requisicao.RegistrarVeiculoRequest;
 import com.cc.vendas.infraestrutura.adaptadores.entrada.web.dto.resposta.VeiculoResumoResponse;
-import com.cc.vendas.infraestrutura.adaptadores.web.mapper.VeiculoMapperWeb;
+import com.cc.vendas.infraestrutura.adaptadores.mapper.VeiculoMapperWeb;
 import com.cc.vendas.aplicacao.casosdeuso.VeiculoUseCase;
 
 import com.cc.vendas.infraestrutura.erro.ApiErrorResponse;

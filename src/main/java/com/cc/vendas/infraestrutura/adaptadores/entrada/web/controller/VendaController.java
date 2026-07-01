@@ -3,7 +3,7 @@ package com.cc.vendas.infraestrutura.adaptadores.entrada.web.controller;
 import com.cc.vendas.aplicacao.casosdeuso.VendaUseCase;
 import com.cc.vendas.infraestrutura.adaptadores.entrada.web.dto.requisicao.RegistrarVendaRequest;
 import com.cc.vendas.infraestrutura.adaptadores.entrada.web.dto.resposta.VeiculoResumoResponse;
-import com.cc.vendas.infraestrutura.adaptadores.web.mapper.VeiculoMapperWeb;
+import com.cc.vendas.infraestrutura.adaptadores.mapper.VeiculoMapperWeb;
 import com.cc.vendas.infraestrutura.erro.ApiErrorResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
