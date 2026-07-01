@@ -127,6 +127,17 @@
 					</goals>
 				</execution>
 			</executions>
+				<configuration>
+					<excludes>
+						<exclude>com/cc/vendas/aplicacao/dto/**/*</exclude>
+
+						<exclude>com/cc/vendas/infraestrutura/configuracao/**/*</exclude>
+
+						<exclude>**/HealthCheckController.class</exclude>
+						<exclude>**/VendaUseCaseTransactional.class</exclude>
+						<exclude>**/VendasApplication.class</exclude>
+					</excludes>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

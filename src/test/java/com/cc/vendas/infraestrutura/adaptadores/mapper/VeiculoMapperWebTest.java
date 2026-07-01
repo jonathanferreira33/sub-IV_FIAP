@@ -8,6 +8,8 @@ import com.cc.vendas.infraestrutura.adaptadores.entrada.web.dto.requisicao.Atual
 import com.cc.vendas.infraestrutura.adaptadores.entrada.web.dto.requisicao.RegistrarVeiculoRequest;
 import com.cc.vendas.infraestrutura.adaptadores.entrada.web.dto.resposta.VeiculoResumoResponse;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -16,6 +18,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@ExtendWith(MockitoExtension.class)
 class VeiculoMapperWebTest {
 
     @Test
