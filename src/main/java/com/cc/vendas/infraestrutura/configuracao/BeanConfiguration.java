@@ -2,6 +2,7 @@ package com.cc.vendas.infraestrutura.configuracao;
 
 import com.cc.vendas.aplicacao.casosdeuso.ConfirmarPagamentoUseCase;
 import com.cc.vendas.aplicacao.casosdeuso.VeiculoUseCase;
+import com.cc.vendas.aplicacao.casosdeuso.VendaEventPublisher;
 import com.cc.vendas.aplicacao.casosdeuso.VendaUseCase;
 import com.cc.vendas.aplicacao.servicos.PagamentoServiceImpl;
 import com.cc.vendas.aplicacao.servicos.VeiculoServiceImpl;
@@ -17,8 +18,8 @@ import org.springframework.context.annotation.Configuration;
 public class BeanConfiguration {
 
     @Bean
-    public ConfirmarPagamentoUseCase confirmarPagamentoUseCase(PagamentoRepository repository) {
-        return new PagamentoServiceImpl(repository);
+    public ConfirmarPagamentoUseCase confirmarPagamentoUseCase(PagamentoRepository repository, VendaEventPublisher publisher) {
+        return new PagamentoServiceImpl(repository, publisher);
     }
 
     @Bean

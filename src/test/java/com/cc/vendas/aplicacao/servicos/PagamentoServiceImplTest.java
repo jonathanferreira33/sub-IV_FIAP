@@ -1,15 +1,19 @@
 package com.cc.vendas.aplicacao.servicos;
 
+import com.cc.vendas.aplicacao.casosdeuso.VendaEventPublisher;
 import com.cc.vendas.aplicacao.dto.entrada.ConfirmacaoPagamentoInput;
 import com.cc.vendas.aplicacao.dto.entrada.RegistrarPagamentoInput;
 import com.cc.vendas.dominio.pagamento.Pagamento;
 import com.cc.vendas.dominio.pagamento.PagamentoRepository;
+import com.cc.vendas.infraestrutura.adaptadores.saida.mensageria.PagamentoCriadoEvent;
 import com.cc.vendas.shared.StatusPagamento;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
@@ -22,6 +26,19 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class PagamentoServiceImplTest {
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+
+        service = new PagamentoServiceImpl(
+                repository,
+                publisher
+        );
+    }
+
+    @Mock
+    private VendaEventPublisher publisher;
 
     @Mock
     private PagamentoRepository repository;
@@ -48,7 +65,7 @@ class PagamentoServiceImplTest {
                 ArgumentCaptor.forClass(Pagamento.class);
 
         verify(repository).cadastrarPagamento(captor.capture());
-
+        verify(publisher).publicarVendaRegistrada(any(PagamentoCriadoEvent.class));
         Pagamento pagamento = captor.getValue();
 
         assertEquals(vendaId, pagamento.getVendaId());
