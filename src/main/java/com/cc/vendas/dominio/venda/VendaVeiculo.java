@@ -10,6 +10,7 @@ public class VendaVeiculo {
     private BigDecimal preco;
     private String docComprador;
     private LocalDateTime dataVenda;
+    private String codigoPagamento;
 
     public VendaVeiculo() {
     }
@@ -19,19 +20,22 @@ public class VendaVeiculo {
             UUID idVeiculo,
             BigDecimal preco,
             String docComprador,
-            LocalDateTime dataVenda
+            LocalDateTime dataVenda,
+            String codigoPagamento
     ) {
         this.id = id;
         this.idVeiculo = idVeiculo;
         this.preco = preco;
         this.docComprador = docComprador;
         this.dataVenda = dataVenda;
+        this.codigoPagamento = codigoPagamento;
     }
 
-    public VendaVeiculo(UUID idVeiculo, BigDecimal preco, String docComprador) {
+    public VendaVeiculo(UUID idVeiculo, BigDecimal preco, String docComprador, String codigoPagamento) {
         this.idVeiculo = idVeiculo;
         this.preco = preco;
         this.docComprador = docComprador;
+        this.codigoPagamento = codigoPagamento;
     }
 
     public UUID getId() { return id; }
@@ -39,18 +43,21 @@ public class VendaVeiculo {
     public BigDecimal getPreco() { return preco; }
     public String getDocComprador() { return docComprador; }
     public LocalDateTime getDataVenda() { return dataVenda; }
+    public String getCodigoPagamento() { return codigoPagamento; }
 
     public static VendaVeiculo criar(
             UUID idVeiculo,
             BigDecimal preco,
-            String docComprador
+            String docComprador,
+            String codigoPagamento
     ) {
         return new VendaVeiculo(
                 UUID.randomUUID(),
                 idVeiculo,
                 preco,
                 docComprador,
-                LocalDateTime.now()
+                LocalDateTime.now(),
+                codigoPagamento
         );
     }
 }

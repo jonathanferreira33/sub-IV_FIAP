@@ -1,5 +1,6 @@
 package com.cc.vendas.infraestrutura.adaptadores.saida.persistencia.repositorios;
 
+import com.cc.vendas.dominio.veiculo.StatusVeiculo;
 import com.cc.vendas.infraestrutura.adaptadores.saida.entidades.JpaVeiculoEntity;
 import com.cc.vendas.infraestrutura.adaptadores.saida.mapper.VeiculoJpaMapper;
 import com.cc.vendas.dominio.veiculo.Veiculo;
@@ -23,13 +24,8 @@ public class VeiculoRepositoryImpl implements VeiculoRepository {
     @Override
     @Transactional
     public Veiculo salvar(Veiculo veiculo) {
-        System.out.println("================ SALVAR =================");
-        System.out.println("ID: " + veiculo.getId());
-        Thread.dumpStack();
 
         Optional<JpaVeiculoEntity> existente = repository.findById(veiculo.getId());
-
-        System.out.println("Encontrou? " + existente.isPresent());
 
         JpaVeiculoEntity entity;
 
@@ -41,6 +37,10 @@ public class VeiculoRepositoryImpl implements VeiculoRepository {
             entity.setAno(veiculo.getAno());
             entity.setPreco(veiculo.getPreco());
             entity.setStatusVeiculo(veiculo.getStatus().toString());
+
+            if (veiculo.getStatus() == StatusVeiculo.VENDIDO) {
+                entity.setDataVenda(veiculo.getDataVenda());
+            }
         } else {
             entity = VeiculoJpaMapper.dominioParaJpa(veiculo);
         }
@@ -51,7 +51,6 @@ public class VeiculoRepositoryImpl implements VeiculoRepository {
 
     @Override
     public Optional<Veiculo> buscarPorId(UUID id) {
-        System.out.println("Repository ID: " + id);
         return repository.findById(id)
                 .map(VeiculoJpaMapper::jpaParaDominio);
     }

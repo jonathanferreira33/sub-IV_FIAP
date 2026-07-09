@@ -26,10 +26,6 @@ public class VeiculoServiceImpl implements VeiculoUseCase {
 
     @Override
     public VeiculoResumoOutput atualizarDadosVeiculo(UUID id, AtualizarVeiculoInput veiculo) {
-        System.out.println("================= ATUALIZAR VEICULO =================");
-        Thread.dumpStack();
-        System.out.println("UseCase ID: " + id);
-
         Veiculo veiculoEntity = repository.buscarPorId(id)
                 .orElseThrow(() ->  new EntityNotFoundException("Veículo não encontrado"));
 
@@ -73,8 +69,7 @@ public class VeiculoServiceImpl implements VeiculoUseCase {
 
     @Override
     public VeiculoResumoOutput cadastrarVeiculo(RegistrarVeiculoInput input) {
-        System.out.println("================= CADASTRAR VEICULO =================");
-        Thread.dumpStack();
+
         validarAno(input.ano());
 
         Veiculo veiculo = Veiculo.criar(

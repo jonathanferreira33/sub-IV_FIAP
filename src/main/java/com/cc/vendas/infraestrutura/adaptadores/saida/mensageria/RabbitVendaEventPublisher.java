@@ -15,6 +15,8 @@ public class RabbitVendaEventPublisher implements VendaEventPublisher {
     @Override
     public void publicarVendaRegistrada(PagamentoCriadoEvent evento) {
 
+        System.out.println("DEBUG: Enviando para Exchange=" + evento.toString());
+
         rabbitTemplate.convertAndSend(
                 RabbitMQConfig.PAYMENT_EXCHANGE,
                 RabbitMQConfig.PAYMENT_ROUTING_KEY,

@@ -1,5 +1,6 @@
 package com.cc.vendas.aplicacao.servicos;
 
+import com.cc.vendas.aplicacao.casosdeuso.VendaEventPublisher;
 import com.cc.vendas.aplicacao.dto.saida.VeiculoResumoOutput;
 import com.cc.vendas.dominio.excecao.RegraNegocioException;
 import com.cc.vendas.dominio.veiculo.StatusVeiculo;
@@ -7,6 +8,8 @@ import com.cc.vendas.dominio.veiculo.Veiculo;
 import com.cc.vendas.dominio.veiculo.VeiculoRepository;
 import com.cc.vendas.dominio.venda.VendaVeiculo;
 import com.cc.vendas.dominio.venda.VendaVeiculoRepository;
+import com.cc.vendas.infraestrutura.adaptadores.saida.mensageria.PagamentoCriadoEvent;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -28,11 +31,19 @@ class VendaVeiculoServiceImplTest {
     @Mock
     private VendaVeiculoRepository vendaRepository;
 
+    @Mock
+    private VendaEventPublisher eventPublisher;
+
     @InjectMocks
     private VendaVeiculoServiceImpl service;
 
     private final UUID veiculoID = UUID.randomUUID();
     private final String doc = "12345678910";
+
+    @BeforeEach
+    void setUp() {
+        service = new VendaVeiculoServiceImpl(veiculoRepository, vendaRepository, eventPublisher);
+    }
 
     @Test
     void deveRegistrarVenda() {
@@ -58,7 +69,7 @@ class VendaVeiculoServiceImplTest {
         assertEquals(veiculo.getId(), output.id());
         assertEquals(StatusVeiculo.VENDIDO, output.statusVeiculo());
         assertNotNull(output.dataVenda());
-
+        verify(eventPublisher).publicarVendaRegistrada(any(PagamentoCriadoEvent.class));
         verify(veiculoRepository).buscarPorId(veiculoID);
         verify(veiculoRepository).salvar(veiculo);
 
@@ -81,7 +92,6 @@ class VendaVeiculoServiceImplTest {
         assertEquals("Veículo não encontrado", exception.getMessage());
 
         verify(veiculoRepository).buscarPorId(veiculoID);
-
         verifyNoInteractions(vendaRepository);
         verify(veiculoRepository, never()).salvar(any(Veiculo.class));
         verify(vendaRepository, never()).salvar(any(VendaVeiculo.class));
@@ -102,7 +112,7 @@ class VendaVeiculoServiceImplTest {
 
         doThrow(new RegraNegocioException("Veículo já vendido"))
                 .when(veiculo)
-                .registrarVenda(doc);
+                .marcarComoVendido(doc);
 
         when(veiculoRepository.buscarPorId(veiculoID))
                 .thenReturn(Optional.of(veiculo));
@@ -115,7 +125,7 @@ class VendaVeiculoServiceImplTest {
         assertEquals("Veículo já vendido", exception.getMessage());
 
         verify(veiculoRepository).buscarPorId(veiculoID);
-        verify(veiculo, times(1)).registrarVenda(doc);
+        verify(veiculo, times(1)).marcarComoVendido(doc);
 
         verify(veiculoRepository, never()).salvar(any(Veiculo.class));
         verify(vendaRepository, never()).salvar(any(VendaVeiculo.class));

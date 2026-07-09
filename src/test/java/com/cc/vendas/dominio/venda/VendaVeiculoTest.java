@@ -13,8 +13,9 @@ class VendaVeiculoTest {
         UUID idVeiculo = UUID.randomUUID();
         BigDecimal preco = BigDecimal.valueOf(95);
         String docComprador = "12345678901";
+        String codPagmento = "AAAA-1234";
 
-        VendaVeiculo venda = VendaVeiculo.criar(idVeiculo, preco, docComprador);
+        VendaVeiculo venda = VendaVeiculo.criar(idVeiculo, preco, docComprador, codPagmento);
 
         assertNotNull(venda);
         assertNotNull(venda.getId());
@@ -22,5 +23,6 @@ class VendaVeiculoTest {
         assertEquals(preco, venda.getPreco());
         assertEquals(docComprador, venda.getDocComprador());
         assertNotNull(venda.getDataVenda());
+        assertEquals(codPagmento, venda.getCodigoPagamento());
     }
 }

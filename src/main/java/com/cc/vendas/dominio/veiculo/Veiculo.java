@@ -126,7 +126,7 @@ public class Veiculo {
         setStatus(StatusVeiculo.DISPONIVEL_PARA_VENDA);
     }
 
-    public void registrarVenda(String cpf) {
+    public void marcarComoVendido(String cpf) {
         if (this.status != StatusVeiculo.DISPONIVEL_PARA_VENDA)
             throw new RegraNegocioException("Veiculo indisponivel para venda");
 

@@ -16,13 +16,16 @@ public class VendaVeiculoJpaMapperTest {
     private final UUID idVeiculo = UUID.randomUUID();
     private final BigDecimal preco = BigDecimal.valueOf(85000);
     private final String docComprador = "12345678910";
+    private final String codPagmento = "AAAA-1234";
+
 
     @Test
     void deveMapearDominioParaJpa() {
         VendaVeiculo venda = VendaVeiculo.criar(
                 idVeiculo,
                 preco,
-                docComprador
+                docComprador,
+                codPagmento
         );
 
         JpaVendaVeiculoEntity entity = VendaVeiculoJpaMapper.dominioParaJpa(venda);
@@ -42,7 +45,8 @@ public class VendaVeiculoJpaMapperTest {
                 idVeiculo,
                 preco,
                 docComprador,
-                LocalDateTime.now()
+                LocalDateTime.now(),
+                codPagmento
         );
 
         VendaVeiculo venda = VendaVeiculoJpaMapper.jpaParaDominio(entity);
@@ -54,6 +58,7 @@ public class VendaVeiculoJpaMapperTest {
         assertEquals(docComprador, venda.getDocComprador());
 
         assertNotNull(venda.getDataVenda());
+        assertNotNull(venda.getCodigoPagamento());
     }
 
     @Test

@@ -2,6 +2,7 @@ package com.cc.vendas.dominio.pagamento;
 
 import com.cc.vendas.dominio.excecao.RegraNegocioException;
 import com.cc.vendas.shared.StatusPagamento;
+import com.cc.vendas.shared.enums.PaymentMethod;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -15,6 +16,10 @@ public class Pagamento {
     private StatusPagamento status;
     private Instant dataCriacao;
     private Instant dataAtualizacao;
+    private UUID customerId;
+    private UUID cardId;
+    private UUID pixId;
+    private PaymentMethod paymentMethod;
 
     private Pagamento(UUID id, UUID vendaId, BigDecimal valor, String codigoPagamento, StatusPagamento status, Instant criadoEm, Instant atualizadoEm) {
         this.id = id;
@@ -33,6 +38,10 @@ public class Pagamento {
     public StatusPagamento getStatus() { return status; }
     public Instant getDataCriacao() { return dataCriacao; }
     public Instant getDataAtualizacao() { return dataAtualizacao; }
+    public UUID getCustomerId() { return customerId; }
+    public UUID getCardId() { return cardId; }
+    public UUID getPixId() { return pixId; }
+    public PaymentMethod getPaymentMethod() { return paymentMethod; }
 
     public static Pagamento criar(
             UUID vendaId,

@@ -15,6 +15,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
 class VendaVeiculoRepositoryImplTest {
@@ -35,8 +36,10 @@ class VendaVeiculoRepositoryImplTest {
         UUID idVeiculo = UUID.randomUUID();
         BigDecimal preco = BigDecimal.valueOf(85000.00);
         String docComprador = "12345678910";
+        String codPagmento = "AAAA-1234";
 
-        VendaVeiculo venda = new VendaVeiculo(idVeiculo, preco, docComprador);
+
+        VendaVeiculo venda = new VendaVeiculo(idVeiculo, preco, docComprador, codPagmento);
 
         VendaVeiculo vendaSalva = vendaVeiculoRepositoryImpl.salvar(venda);
 
@@ -53,5 +56,6 @@ class VendaVeiculoRepositoryImplTest {
                 .orElseThrow(() -> new AssertionError("Venda não encontrada no banco para o veículo informado"));
 
         assertEquals(docComprador, entidadeNoBanco.getDocComprador());
+        assertEquals(codPagmento, entidadeNoBanco.getCodigoPagamento());
     }
 }

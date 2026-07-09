@@ -10,7 +10,6 @@ import com.cc.vendas.aplicacao.servicos.VendaVeiculoServiceImpl;
 import com.cc.vendas.dominio.pagamento.PagamentoRepository;
 import com.cc.vendas.dominio.veiculo.VeiculoRepository;
 import com.cc.vendas.dominio.venda.VendaVeiculoRepository;
-import com.cc.vendas.infraestrutura.global.VendaUseCaseTransactional;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -28,13 +27,10 @@ public class BeanConfiguration {
     }
 
     @Bean
-    public VendaUseCase vendaUseCase(
-            VeiculoRepository veiculoRepository,
-            VendaVeiculoRepository vendaRepository) {
-
-        VendaUseCase service =
-                new VendaVeiculoServiceImpl(veiculoRepository, vendaRepository);
-
-        return new VendaUseCaseTransactional(service);
+    public VendaUseCase vendaUseCase(VeiculoRepository veiculoRepository,
+                                     VendaVeiculoRepository vendaRepository,
+                                     VendaEventPublisher eventPublisher) {
+        return new VendaVeiculoServiceImpl(veiculoRepository, vendaRepository, eventPublisher);
     }
+
 }

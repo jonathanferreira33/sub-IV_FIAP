@@ -9,7 +9,8 @@ public class VendaVeiculoJpaMapper {
                 veiculo.getIdVeiculo(),
                 veiculo.getPreco(),
                 veiculo.getDocComprador(),
-                veiculo.getDataVenda()
+                veiculo.getDataVenda(),
+                veiculo.getCodigoPagamento()
         );
     }
 
@@ -21,7 +22,8 @@ public class VendaVeiculoJpaMapper {
         return VendaVeiculo.criar(
                 entidade.getIdVeiculo(),
                 entidade.getPreco(),
-                entidade.getDocComprador()
+                entidade.getDocComprador(),
+                entidade.getCodigoPagamento()
         );
     }
 }

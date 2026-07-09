@@ -11,7 +11,6 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "tb_vendas_veiculo")
-@Data
 public class JpaVendaVeiculoEntity extends BaseJpaEntity {
     @Id
     @Column(name = "id", nullable = false, updatable = false)
@@ -21,6 +20,7 @@ public class JpaVendaVeiculoEntity extends BaseJpaEntity {
     private BigDecimal preco;
     private String docComprador;
     private LocalDateTime dataCompra;
+    private String codigoPagamento;
 
     protected JpaVendaVeiculoEntity() {}
 
@@ -28,33 +28,30 @@ public class JpaVendaVeiculoEntity extends BaseJpaEntity {
             UUID idVeiculo,
             BigDecimal preco,
             String docComprador,
-            LocalDateTime dataCompra) {
+            LocalDateTime dataCompra,
+            String codigoPagamento) {
         this.id = UUID.randomUUID();
         this.idVeiculo = idVeiculo;
         this.preco = preco;
         this.docComprador = docComprador;
         this.dataCompra = dataCompra;
+        this.codigoPagamento = codigoPagamento;
     }
 
     public UUID getId() {
         return id;
     }
-
     public void setId(UUID id) {
         this.id = id;
     }
-
     public UUID getIdVeiculo() {
         return idVeiculo;
     }
-
     public void setIdVeiculo(UUID idVeiculo) {
         this.idVeiculo = idVeiculo;
     }
-
-    public BigDecimal getPreco() {
-        return preco;
-    }
+    public BigDecimal getPreco() { return preco; }
+    public String getCodigoPagamento() { return codigoPagamento; }
 
     public void setPreco(BigDecimal preco) {
         this.preco = preco;

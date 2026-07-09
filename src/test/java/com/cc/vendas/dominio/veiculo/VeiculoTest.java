@@ -86,7 +86,7 @@ class VeiculoTest {
         Veiculo veiculo = Veiculo.criar(marca, modelo, cor, ano, preco);
         veiculo.alterarStatusParaDisponivel();
 
-        veiculo.registrarVenda(cpfComprador);
+        veiculo.marcarComoVendido(cpfComprador);
 
         assertEquals(StatusVeiculo.VENDIDO, veiculo.getStatus());
         assertEquals(cpfComprador, veiculo.getDocComprador());
@@ -135,7 +135,7 @@ class VeiculoTest {
 
         RegraNegocioException exception = assertThrows(
                 RegraNegocioException.class,
-                () -> veiculo.registrarVenda(cpfComprador)
+                () -> veiculo.marcarComoVendido(cpfComprador)
         );
         assertEquals("Veiculo indisponivel para venda", exception.getMessage());
     }
