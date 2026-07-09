@@ -5,6 +5,7 @@ import com.cc.vendas.infraestrutura.adaptadores.saida.mapper.VeiculoJpaMapper;
 import com.cc.vendas.dominio.veiculo.Veiculo;
 import com.cc.vendas.dominio.veiculo.VeiculoRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,14 +21,37 @@ public class VeiculoRepositoryImpl implements VeiculoRepository {
     }
 
     @Override
+    @Transactional
     public Veiculo salvar(Veiculo veiculo) {
-        JpaVeiculoEntity entity = VeiculoJpaMapper.dominioParaJpa(veiculo);
-        this.repository.save(entity);
-        return VeiculoJpaMapper.jpaParaDominio(entity);
+        System.out.println("================ SALVAR =================");
+        System.out.println("ID: " + veiculo.getId());
+        Thread.dumpStack();
+
+        Optional<JpaVeiculoEntity> existente = repository.findById(veiculo.getId());
+
+        System.out.println("Encontrou? " + existente.isPresent());
+
+        JpaVeiculoEntity entity;
+
+        if (existente.isPresent()) {
+            entity = existente.get();
+            entity.setMarca(veiculo.getMarca().valor());
+            entity.setModelo(veiculo.getModelo());
+            entity.setCor(veiculo.getCor().valor());
+            entity.setAno(veiculo.getAno());
+            entity.setPreco(veiculo.getPreco());
+            entity.setStatusVeiculo(veiculo.getStatus().toString());
+        } else {
+            entity = VeiculoJpaMapper.dominioParaJpa(veiculo);
+        }
+
+        JpaVeiculoEntity salva = repository.save(entity);
+        return VeiculoJpaMapper.jpaParaDominio(salva);
     }
 
     @Override
     public Optional<Veiculo> buscarPorId(UUID id) {
+        System.out.println("Repository ID: " + id);
         return repository.findById(id)
                 .map(VeiculoJpaMapper::jpaParaDominio);
     }

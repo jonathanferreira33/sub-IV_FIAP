@@ -45,8 +45,8 @@ class RabbitVendaEventPublisherTest {
         publisher.publicarVendaRegistrada(evento);
 
         verify(rabbitTemplate).convertAndSend(
-                RabbitMQConfig.VENDA_EXCHANGE,
-                RabbitMQConfig.VENDA_ROUTING_KEY,
+                RabbitMQConfig.PAYMENT_EXCHANGE,
+                RabbitMQConfig.PAYMENT_ROUTING_KEY,
                 evento
         );
     }

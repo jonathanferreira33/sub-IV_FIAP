@@ -16,8 +16,8 @@ public class RabbitVendaEventPublisher implements VendaEventPublisher {
     public void publicarVendaRegistrada(PagamentoCriadoEvent evento) {
 
         rabbitTemplate.convertAndSend(
-                RabbitMQConfig.VENDA_EXCHANGE,
-                RabbitMQConfig.VENDA_ROUTING_KEY,
+                RabbitMQConfig.PAYMENT_EXCHANGE,
+                RabbitMQConfig.PAYMENT_ROUTING_KEY,
                 evento
         );
     }

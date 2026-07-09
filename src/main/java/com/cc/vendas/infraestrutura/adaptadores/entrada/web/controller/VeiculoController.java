@@ -263,6 +263,8 @@ public class VeiculoController {
             @Valid
             @RequestBody AtualizarVeiculoRequest request) {
 
+        System.out.println("Controller ID: " + idVeiculo);
+
         var output = useCase.atualizarDadosVeiculo(
                 idVeiculo,
                 VeiculoMapperWeb.atualizarRequestParaAtualizarInput(request)

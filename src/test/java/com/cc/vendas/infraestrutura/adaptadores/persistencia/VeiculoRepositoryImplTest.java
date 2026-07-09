@@ -4,12 +4,15 @@ import com.cc.vendas.dominio.veiculo.Veiculo;
 import com.cc.vendas.infraestrutura.adaptadores.saida.entidades.JpaVeiculoEntity;
 import com.cc.vendas.infraestrutura.adaptadores.saida.persistencia.repositorios.JpaVeiculoRepository;
 import com.cc.vendas.infraestrutura.adaptadores.saida.persistencia.repositorios.VeiculoRepositoryImpl;
+import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -27,7 +30,22 @@ class VeiculoRepositoryImplTest {
 
     @BeforeEach
     void setUp() {
-        this.veiculoRepositoryImpl = new VeiculoRepositoryImpl(jpaVeiculoRepository);
+        this.veiculoRepositoryImpl = new VeiculoRepositoryImpl(
+                jpaVeiculoRepository
+        );
+
+        JpaVeiculoEntity veiculo = new JpaVeiculoEntity(
+                UUID.randomUUID(),
+                "Toyota",
+                "Corolla",
+                "Branco",
+                2024,
+                BigDecimal.valueOf(100000),
+                "DISPONIVEL",
+                "12345678910",
+                Instant.now()
+        );
+        jpaVeiculoRepository.save(veiculo);
     }
 
     @Test
@@ -47,18 +65,14 @@ class VeiculoRepositoryImplTest {
 
     @Test
     void deveBuscarVeiculoPorIdComSucesso() {
-        Veiculo veiculo = Veiculo.criar(
-                "Honda",
-                "Civic",
-                "Preto",
-                2023,
-                BigDecimal.valueOf(120000));
-        veiculoRepositoryImpl.salvar(veiculo);
+        // 1. Cria com ID fixo ou garante que pegamos o ID depois de salvar
+        Veiculo veiculo = Veiculo.criar("Honda", "Civic", "Preto", 2023, BigDecimal.valueOf(120000));
 
-        Optional<Veiculo> veiculoEncontrado = veiculoRepositoryImpl.buscarPorId(veiculo.getId());
+        Veiculo salvo = veiculoRepositoryImpl.salvar(veiculo);
 
-        assertTrue(veiculoEncontrado.isPresent());
-        assertEquals(veiculo.getId(), veiculoEncontrado.get().getId());
+        Optional<Veiculo> veiculoEncontrado = veiculoRepositoryImpl.buscarPorId(salvo.getId());
+
+        assertTrue(veiculoEncontrado.isPresent(), "O veículo deveria ter sido encontrado no banco");
         assertEquals("Civic", veiculoEncontrado.get().getModelo());
     }
 
