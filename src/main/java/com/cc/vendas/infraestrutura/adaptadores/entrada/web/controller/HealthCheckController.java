@@ -10,6 +10,6 @@ public class HealthCheckController {
 
     @GetMapping
     public String test() {
-        return "ok";
+        return "ok vehicle-service";
     }
 }

@@ -1,6 +1,5 @@
 package com.cc.vendas.infraestrutura.adaptadores.web.controller;
 
-
 import com.cc.vendas.aplicacao.casosdeuso.VeiculoUseCase;
 import com.cc.vendas.aplicacao.dto.saida.VeiculoResumoOutput;
 import com.cc.vendas.dominio.veiculo.StatusVeiculo;

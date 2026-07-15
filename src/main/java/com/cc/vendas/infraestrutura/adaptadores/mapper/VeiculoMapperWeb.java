@@ -1,5 +1,7 @@
 package com.cc.vendas.infraestrutura.adaptadores.mapper;
 
+import com.cc.vendas.aplicacao.dto.entrada.AtualizarStatusVeiculoVendidoInput;
+import com.cc.vendas.infraestrutura.adaptadores.entrada.web.dto.requisicao.AtualizarStatusVeiculoRequest;
 import com.cc.vendas.infraestrutura.adaptadores.entrada.web.dto.requisicao.AtualizarVeiculoRequest;
 import com.cc.vendas.infraestrutura.adaptadores.entrada.web.dto.requisicao.RegistrarVeiculoRequest;
 import com.cc.vendas.infraestrutura.adaptadores.entrada.web.dto.resposta.VeiculoResumoResponse;
@@ -8,6 +10,7 @@ import com.cc.vendas.aplicacao.dto.entrada.RegistrarVeiculoInput;
 import com.cc.vendas.aplicacao.dto.saida.VeiculoResumoOutput;
 
 import java.util.List;
+import java.util.UUID;
 
 public class VeiculoMapperWeb {
 
@@ -48,5 +51,15 @@ public class VeiculoMapperWeb {
         return outputs.stream()
                 .map(VeiculoMapperWeb::resumoOutputParaResponse)
                 .toList();
+    }
+
+    public static AtualizarStatusVeiculoVendidoInput requestParaInput(
+            UUID idVeiculo,
+            AtualizarStatusVeiculoRequest request) {
+
+        return new AtualizarStatusVeiculoVendidoInput(
+                idVeiculo,
+                request.idPagamento()
+        );
     }
 }

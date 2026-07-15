@@ -1,15 +1,15 @@
 package com.cc.vendas.infraestrutura.adaptadores.persistencia;
 
+import com.cc.vendas.dominio.veiculo.StatusVeiculo;
 import com.cc.vendas.dominio.veiculo.Veiculo;
 import com.cc.vendas.infraestrutura.adaptadores.saida.entidades.JpaVeiculoEntity;
 import com.cc.vendas.infraestrutura.adaptadores.saida.persistencia.repositorios.JpaVeiculoRepository;
 import com.cc.vendas.infraestrutura.adaptadores.saida.persistencia.repositorios.VeiculoRepositoryImpl;
-import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -65,7 +65,6 @@ class VeiculoRepositoryImplTest {
 
     @Test
     void deveBuscarVeiculoPorIdComSucesso() {
-        // 1. Cria com ID fixo ou garante que pegamos o ID depois de salvar
         Veiculo veiculo = Veiculo.criar("Honda", "Civic", "Preto", 2023, BigDecimal.valueOf(120000));
 
         Veiculo salvo = veiculoRepositoryImpl.salvar(veiculo);
@@ -115,5 +114,40 @@ class VeiculoRepositoryImplTest {
         assertEquals("Uno", resultado.get(0).getModelo());
         assertEquals("Ka", resultado.get(1).getModelo());
         assertEquals("320i", resultado.get(2).getModelo());
+    }
+
+    @Test
+    void deveAtualizarVeiculoQuandoJaExisteEStatusDiferenteDeVendido() {
+        Veiculo veiculoOriginal = Veiculo.criar("Ford", "Fiesta", "Azul", 2019, BigDecimal.valueOf(40000));
+        Veiculo salvoInicialmente = veiculoRepositoryImpl.salvar(veiculoOriginal);
+
+        ReflectionTestUtils.setField(salvoInicialmente, "preco", BigDecimal.valueOf(45000));
+
+        Veiculo atualizado = veiculoRepositoryImpl.salvar(salvoInicialmente);
+
+        Optional<JpaVeiculoEntity> noBanco = jpaVeiculoRepository.findById(atualizado.getId());
+        assertTrue(noBanco.isPresent());
+
+        assertEquals(0, new BigDecimal("45000").compareTo(noBanco.get().getPreco()));
+        assertNull(noBanco.get().getDataVenda());
+    }
+
+    @Test
+    void deveAtualizarVeiculoESetarDataVendaQuandoStatusForVendido() {
+        Veiculo veiculoOriginal = Veiculo.criar("Chevrolet", "Onix", "Preto", 2021, BigDecimal.valueOf(60000));
+        Veiculo salvoInicialmente = veiculoRepositoryImpl.salvar(veiculoOriginal);
+
+        Instant dataVenda = Instant.now();
+        ReflectionTestUtils.setField(salvoInicialmente, "status", StatusVeiculo.VENDIDO);
+        ReflectionTestUtils.setField(salvoInicialmente, "dataVenda", dataVenda);
+
+        veiculoRepositoryImpl.salvar(salvoInicialmente);
+
+        Optional<JpaVeiculoEntity> noBanco = jpaVeiculoRepository.findById(salvoInicialmente.getId());
+        assertTrue(noBanco.isPresent());
+
+        assertEquals("VENDIDO", noBanco.get().getStatusVeiculo());
+        assertNotNull(noBanco.get().getDataVenda());
+        assertEquals(dataVenda, noBanco.get().getDataVenda());
     }
 }

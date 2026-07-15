@@ -125,6 +125,7 @@ public class Veiculo {
     public void alterarStatusParaDisponivel() {
         setStatus(StatusVeiculo.DISPONIVEL_PARA_VENDA);
     }
+    public void alterarStatusParaVendido() { setStatus(StatusVeiculo.VENDIDO); }
 
     public void marcarComoVendido(String cpf) {
         if (this.status != StatusVeiculo.DISPONIVEL_PARA_VENDA)

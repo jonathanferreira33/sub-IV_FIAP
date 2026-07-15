@@ -1,6 +1,7 @@
 package com.cc.vendas.infraestrutura.adaptadores.entrada.web.controller;
 
 import com.cc.vendas.aplicacao.dto.saida.VeiculoResumoOutput;
+import com.cc.vendas.infraestrutura.adaptadores.entrada.web.dto.requisicao.AtualizarStatusVeiculoRequest;
 import com.cc.vendas.infraestrutura.adaptadores.entrada.web.dto.requisicao.AtualizarVeiculoRequest;
 import com.cc.vendas.infraestrutura.adaptadores.entrada.web.dto.requisicao.RegistrarVeiculoRequest;
 import com.cc.vendas.infraestrutura.adaptadores.entrada.web.dto.resposta.VeiculoResumoResponse;
@@ -18,13 +19,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
@@ -271,6 +266,73 @@ public class VeiculoController {
         var response = VeiculoMapperWeb.resumoOutputParaResponse(output);
 
         return ResponseEntity.ok(response);
+    }
+
+    @Operation(
+            summary = "Atualizar status do veículo",
+            description = "Atualiza o status do veículo após confirmação do pagamento."
+    )
+    @ApiResponses(value = {
+
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Status atualizado com sucesso"
+            ),
+
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Requisição inválida",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ApiErrorResponse.class)
+                    )
+            ),
+
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Veículo não encontrado",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ApiErrorResponse.class)
+                    )
+            ),
+
+            @ApiResponse(
+                    responseCode = "422",
+                    description = "Erro de regra de negócio",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ApiErrorResponse.class)
+                    )
+            ),
+
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Erro interno do servidor",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ApiErrorResponse.class)
+                    )
+            )
+    })
+    @PatchMapping("/{idVeiculo}/status")
+    public ResponseEntity<Void> atualizarStatus(
+
+            @Parameter(
+                    description = "ID do veículo",
+                    example = "123e4567-e89b-12d3-a456-426614174000",
+                    required = true
+            )
+            @PathVariable UUID idVeiculo,
+
+            @Valid
+            @RequestBody AtualizarStatusVeiculoRequest request) {
+
+        useCase.atualizarStatusVeiculoVendido(
+                VeiculoMapperWeb.requestParaInput(idVeiculo, request)
+        );
+
+        return ResponseEntity.ok().build();
     }
 
 }

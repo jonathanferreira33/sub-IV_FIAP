@@ -250,7 +250,6 @@ class VeiculoServiceImplTest {
 
     @Test
     void deveCadastrarVeiculo() {
-        // Arrange
         RegistrarVeiculoInput input = new RegistrarVeiculoInput(
                 "Toyota",
                 "Corolla",

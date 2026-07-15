@@ -1,27 +1,32 @@
 package com.cc.vendas.aplicacao.servicos;
 
 import com.cc.vendas.aplicacao.casosdeuso.VeiculoUseCase;
+import com.cc.vendas.aplicacao.dto.entrada.AtualizarStatusVeiculoVendidoInput;
 import com.cc.vendas.aplicacao.dto.entrada.AtualizarVeiculoInput;
 import com.cc.vendas.aplicacao.dto.entrada.RegistrarVeiculoInput;
 import com.cc.vendas.aplicacao.dto.mapper.VeiculoAppMapper;
 import com.cc.vendas.aplicacao.dto.saida.VeiculoResumoOutput;
+import com.cc.vendas.aplicacao.gateway.PagamentoGateway;
+import com.cc.vendas.dominio.excecao.PagamentoNaoAprovadoException;
 import com.cc.vendas.dominio.excecao.RegraNegocioException;
 import com.cc.vendas.dominio.veiculo.StatusVeiculo;
 import com.cc.vendas.dominio.veiculo.Veiculo;
 import com.cc.vendas.dominio.veiculo.VeiculoRepository;
+import com.cc.vendas.shared.StatusPagamento;
 import jakarta.persistence.EntityNotFoundException;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public class VeiculoServiceImpl implements VeiculoUseCase {
 
     private final VeiculoRepository repository;
+    private final PagamentoGateway pagamentoGateway;
 
-    public VeiculoServiceImpl(VeiculoRepository repository) {
+    public VeiculoServiceImpl(VeiculoRepository repository, PagamentoGateway pagamentoGateway) {
         this.repository = repository;
+        this.pagamentoGateway = pagamentoGateway;
     }
 
     @Override
@@ -36,7 +41,6 @@ public class VeiculoServiceImpl implements VeiculoUseCase {
                 veiculo.ano(),
                 veiculo.preco()
         );
-
 
         repository.salvar(veiculoEntity);
 
@@ -85,6 +89,28 @@ public class VeiculoServiceImpl implements VeiculoUseCase {
         repository.salvar(veiculo);
 
         return VeiculoAppMapper.veiculoParaResumoOutput(veiculo);
+    }
+
+    @Override
+    public void atualizarStatusVeiculoVendido(AtualizarStatusVeiculoVendidoInput input) {
+
+        input.validarInput();
+
+        Veiculo veiculo = repository.buscarPorId(input.idVeiculo())
+                .orElseThrow(() -> new EntityNotFoundException());
+
+        var pagamento = pagamentoGateway.buscarPagamento(input.idPagamento());
+
+        if (pagamento.status() == StatusPagamento.CANCELADO) {
+            veiculo.alterarStatusParaDisponivel();
+            repository.salvar(veiculo);
+            throw new PagamentoNaoAprovadoException(input.idPagamento());
+        }
+
+        if (pagamento.status() == StatusPagamento.CONFIRMADO) {
+            veiculo.alterarStatusParaVendido();
+            repository.salvar(veiculo);
+        }
     }
 
     private void validarAno(int ano) {
