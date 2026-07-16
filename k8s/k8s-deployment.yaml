@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: subiifiap-api
+  labels:
+    app: subiifiap
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: subiifiap
+  template:
+    metadata:
+      labels:
+        app: subiifiap
+    spec:
+      containers:
+        - name: subiifiap-api
+          image: subiifiap-core:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: spring-app-config
+            - secretRef:
+                name: spring-app-secret
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 15
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "dev"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: subiifiap-service
+spec:
+  selector:
+    app: subiifiap
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: LoadBalancer
