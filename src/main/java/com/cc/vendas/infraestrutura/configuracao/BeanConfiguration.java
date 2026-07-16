@@ -11,8 +11,8 @@ import org.springframework.context.annotation.Configuration;
 public class BeanConfiguration {
 
     @Bean
-    public VeiculoUseCase veiculoUseCase(VeiculoRepository repository, PagamentoGateway pagamentoGateway) {
-        return new VeiculoServiceImpl(repository, pagamentoGateway);
+    public VeiculoUseCase veiculoUseCase(VeiculoRepository repository) {
+        return new VeiculoServiceImpl(repository);
     }
 
 }

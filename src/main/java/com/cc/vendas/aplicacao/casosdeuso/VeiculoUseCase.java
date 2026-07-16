@@ -14,5 +14,5 @@ public interface VeiculoUseCase {
     List<VeiculoResumoOutput> buscarVeiculosVendidos();
     VeiculoResumoOutput buscarVeiculoPorId(UUID id);
     VeiculoResumoOutput cadastrarVeiculo(RegistrarVeiculoInput input);
-    void atualizarStatusVeiculoVendido(AtualizarStatusVeiculoVendidoInput input);
+    void atualizarStatusVeiculoVendido(UUID idVeiculo, AtualizarStatusVeiculoVendidoInput input);
 }

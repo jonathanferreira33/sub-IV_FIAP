@@ -22,11 +22,9 @@ import java.util.UUID;
 public class VeiculoServiceImpl implements VeiculoUseCase {
 
     private final VeiculoRepository repository;
-    private final PagamentoGateway pagamentoGateway;
 
-    public VeiculoServiceImpl(VeiculoRepository repository, PagamentoGateway pagamentoGateway) {
+    public VeiculoServiceImpl(VeiculoRepository repository) {
         this.repository = repository;
-        this.pagamentoGateway = pagamentoGateway;
     }
 
     @Override
@@ -92,22 +90,20 @@ public class VeiculoServiceImpl implements VeiculoUseCase {
     }
 
     @Override
-    public void atualizarStatusVeiculoVendido(AtualizarStatusVeiculoVendidoInput input) {
+    public void atualizarStatusVeiculoVendido(UUID idVeiculo, AtualizarStatusVeiculoVendidoInput input) {
 
         input.validarInput();
 
-        Veiculo veiculo = repository.buscarPorId(input.idVeiculo())
+        Veiculo veiculo = repository.buscarPorId(idVeiculo)
                 .orElseThrow(() -> new EntityNotFoundException());
 
-        var pagamento = pagamentoGateway.buscarPagamento(input.idPagamento());
 
-        if (pagamento.status() == StatusPagamento.CANCELADO) {
+        if (input.statusPagamento() == StatusPagamento.CANCELADO) {
             veiculo.alterarStatusParaDisponivel();
             repository.salvar(veiculo);
-            throw new PagamentoNaoAprovadoException(input.idPagamento());
         }
 
-        if (pagamento.status() == StatusPagamento.CONFIRMADO) {
+        if (input.statusPagamento() == StatusPagamento.CONFIRMADO) {
             veiculo.alterarStatusParaVendido();
             repository.salvar(veiculo);
         }

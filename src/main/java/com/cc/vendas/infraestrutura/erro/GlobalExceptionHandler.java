@@ -19,7 +19,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiErrorResponse> handleEntityNotFound(
             EntityNotFoundException ex,
             HttpServletRequest request) {
-
+        ex.printStackTrace();
         return buildResponse(
                 HttpStatus.NOT_FOUND,
                 "Recurso não encontrado",
@@ -32,7 +32,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiErrorResponse> handleRegraNegocio(
             RegraNegocioException ex,
             HttpServletRequest request) {
-
+        ex.printStackTrace();
         return buildResponse(
                 HttpStatus.BAD_REQUEST,
                 "Erro de regra de negócio",
@@ -75,7 +75,7 @@ public class GlobalExceptionHandler {
         if (path.startsWith("/v3/api-docs") || path.startsWith("/swagger-ui")) {
             throw new RuntimeException(ex);
         }
-
+        ex.printStackTrace();
         return buildResponse(
                 HttpStatus.INTERNAL_SERVER_ERROR,
                 "Erro interno",

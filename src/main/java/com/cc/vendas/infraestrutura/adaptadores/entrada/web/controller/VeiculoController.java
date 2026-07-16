@@ -18,6 +18,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +33,7 @@ import java.util.UUID;
 public class VeiculoController {
 
     private final VeiculoUseCase useCase;
+    private static final Logger log = LoggerFactory.getLogger(VeiculoController.class);
 
     public VeiculoController(VeiculoUseCase useCase) {
         this.useCase = useCase;
@@ -315,8 +318,8 @@ public class VeiculoController {
                     )
             )
     })
-    @PatchMapping("/{idVeiculo}/status")
-    public ResponseEntity<Void> atualizarStatus(
+    @PatchMapping("/notificar-venda/{idVeiculo}")
+    public ResponseEntity<Void> notificarVenda(
 
             @Parameter(
                     description = "ID do veículo",
@@ -328,8 +331,10 @@ public class VeiculoController {
             @Valid
             @RequestBody AtualizarStatusVeiculoRequest request) {
 
+        log.info("Id veiculo: " + idVeiculo + "| VendaID: " + request.vendaId());
         useCase.atualizarStatusVeiculoVendido(
-                VeiculoMapperWeb.requestParaInput(idVeiculo, request)
+                idVeiculo,
+                VeiculoMapperWeb.requestParaInput(request)
         );
 
         return ResponseEntity.ok().build();

@@ -10,7 +10,6 @@ import com.cc.vendas.aplicacao.dto.entrada.RegistrarVeiculoInput;
 import com.cc.vendas.aplicacao.dto.saida.VeiculoResumoOutput;
 
 import java.util.List;
-import java.util.UUID;
 
 public class VeiculoMapperWeb {
 
@@ -54,12 +53,11 @@ public class VeiculoMapperWeb {
     }
 
     public static AtualizarStatusVeiculoVendidoInput requestParaInput(
-            UUID idVeiculo,
             AtualizarStatusVeiculoRequest request) {
 
         return new AtualizarStatusVeiculoVendidoInput(
-                idVeiculo,
-                request.idPagamento()
+                request.vendaId(),
+                request.statusPagamento()
         );
     }
 }
