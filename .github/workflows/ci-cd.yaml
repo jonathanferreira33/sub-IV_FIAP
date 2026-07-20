@@ -49,5 +49,5 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/payment-hub:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/payment-hub:${{ github.sha }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/vehicle-service:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/vehicle-service:${{ github.sha }}
